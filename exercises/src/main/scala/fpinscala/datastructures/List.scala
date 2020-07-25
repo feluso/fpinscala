@@ -50,11 +50,23 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
 
 
-  def tail[A](l: List[A]): List[A] = ???
+  def tail[A](l: List[A]): List[A] = l match {
+    // the tail of a Nil sounds like something undetermined, considering a List of one element has Nil as it's tail
+    // defining the tail of an empty list sounds like I could have an infinite amount of Nils at the tail of each List
+    // I decided to return a Nil as I don't know the correct answer
+    case Nil => Nil
+    case Cons(_, xs) => xs
+  }
 
-  def setHead[A](l: List[A], h: A): List[A] = ???
+  def setHead[A](l: List[A], h: A): List[A] = l match {
+    case Nil => Cons(h, Nil) //Is setting the head of an empty list technically adding one element? maybe it's better to leave it as nil
+    case Cons(_, xs) => Cons(h, xs)
+  }
 
-  def drop[A](l: List[A], n: Int): List[A] = ???
+  def drop[A](l: List[A], n: Int): List[A] = l match {
+     case Nil => sys.error("Can't remove the last " + n + "elements from the list") //done like this considering the style to the answer to the other questions
+     case Cons(h, xs) => if(n == 0) Cons(h, xs) else drop(xs, n - 1)
+  }
 
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = ???
 
